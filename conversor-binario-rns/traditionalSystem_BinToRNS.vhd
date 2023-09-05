@@ -79,19 +79,19 @@ LEDR(2*n-1 downto 0) <= SW(2*n-1 downto 0);
 -- Conversão Modulo 15
 comp0_2n_m1: CSA_EAC generic map	(  n => n)
 	             port map ( I0 => SW(n-1 downto 0), I1 => SW(2*n-1 downto n), I2 => SW(3*n-1 downto 2*n), S =>sum0_2n_m1 , C =>carry0_2n_m1); 
-comp1_2n_m1: CSA_EAC generic map	( n => n)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               )
-	             port map (I0 => sum0_2n_m1, I1 => carry0_2n_m1, I2 => SW(3*n-1 downto 0), S => sum1_2n_m1, C => carry1_2n_m1); -- A fazer pel@ alun@
+comp1_2n_m1: CSA_EAC generic map	( n => n) 
+					 port map (I0 => sum0_2n_m1, I1 => carry0_2n_m1, I2 => SW(4*n-1 downto 3*n), S => sum1_2n_m1, C => carry1_2n_m1);
 add_2n_m1: CPA_mod15 generic map	(  n => n)
-                     port map( s1 => sum1_2n_m1, c1 => carry1_2n_m1, f => LED(3*n-1 downto 2*n);
+                     port map( s1 => sum1_2n_m1, c1 => carry1_2n_m1, f => LEDR(3*n-1 downto 2*n));
 
 -- Conversão Modulo 17
 comp0_2n_p1: CSA_IEAC generic map	(  n => n)
-	              port map ( I0 => SW(n-1 downto 0), I1 => not(SW(2*n-1 downto n)), I2 => SW(3*n-1 downto 2*n), S => sum0_2n_p1 , C => carry0_2n_p1 ); -- A fazer pel@ alun@
+	              port map ( I0 => SW(n-1 downto 0), I1 => not(SW(2*n-1 downto n)), I2 => SW(3*n-1 downto 2*n), S => sum0_2n_p1 , C => carry0_2n_p1 );
 comp1_2n_p1: CSA_IEAC generic map	(  n => n)
-	              port map ( I0 => sum0_2n_p1, I1 => carry0_2n_p1 , I2 => not(SW(3*n-1 downto 0)) , S => sum1_2n_p1, C => carry1_2n_p1); -- A fazer pel@ alun@
+	              port map ( I0 => sum0_2n_p1, I1 => carry0_2n_p1 , I2 => not(SW(4*n-1 downto 3*n)) , S => sum1_2n_p1, C => carry1_2n_p1); 
 comp2_2n_p1: CSA_IEAC generic map	(  n => n)
-	              port map ( I0 =>  , I1 => sum1_2n_p1, I2 => carry1_2n_p1 , S =>sum2_2n_p1 , C =>carry2_2n_p1); -- A fazer pel@ alun@
-
+	              port map ( I0 => (others => '0') , I1 => sum1_2n_p1, I2 => carry1_2n_p1 , S =>sum2_2n_p1 , C =>carry2_2n_p1); 
+					  
 sum3_2n_p1 <= '0' & sum2_2n_p1;
 carry3_2n_p1 <= '0' & carry2_2n_p1;
 
