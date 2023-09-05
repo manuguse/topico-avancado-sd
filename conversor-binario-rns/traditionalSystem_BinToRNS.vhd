@@ -86,11 +86,11 @@ add_2n_m1: CPA_mod15 generic map	(  n => n)
 
 -- Conversão Modulo 17
 comp0_2n_p1: CSA_IEAC generic map	(  n => n)
-	              port map ( I0 => SW(n-1 downto 0), I1 => not(SW(2*n-1 downto n)), I2 => SW(3*n-1 downto 2*n), S => sum0_2n_p1 , C => carry0_2n_p1 );
+	              port map ( I0 => SW(n-1 downto 0), I1 => notSW(2*n-1 downto n), I2 => SW(3*n-1 downto 2*n), S => sum0_2n_p1 , C => carry0_2n_p1 );
 comp1_2n_p1: CSA_IEAC generic map	(  n => n)
-	              port map ( I0 => sum0_2n_p1, I1 => carry0_2n_p1 , I2 => not(SW(4*n-1 downto 3*n)) , S => sum1_2n_p1, C => carry1_2n_p1); 
+	              port map ( I0 => sum0_2n_p1, I1 => carry0_2n_p1 , I2 => notSW(4*n-1 downto 3*n) , S => sum1_2n_p1, C => carry1_2n_p1); 
 comp2_2n_p1: CSA_IEAC generic map	(  n => n)
-	              port map ( I0 => (others => '0') , I1 => sum1_2n_p1, I2 => carry1_2n_p1 , S =>sum2_2n_p1 , C =>carry2_2n_p1); 
+	              port map ( I0 => "0001" , I1 => sum1_2n_p1, I2 => carry1_2n_p1 , S =>sum2_2n_p1 , C =>carry2_2n_p1); 
 					  
 sum3_2n_p1 <= '0' & sum2_2n_p1;
 carry3_2n_p1 <= '0' & carry2_2n_p1;
