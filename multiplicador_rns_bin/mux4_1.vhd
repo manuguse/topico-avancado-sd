@@ -3,8 +3,8 @@
  
  entity mux4_1 is
 	generic(n :positive:=4);
-	port ( A, B, C, D : in STD_LOGIC_VECTOR (n-1 downto 0)
-           sel : in STD_LOGIC;
+	port ( A, B, C, D : in STD_LOGIC_VECTOR (n-1 downto 0);
+           sel : in STD_LOGIC_VECTOR(1 downto 0);
            S : out STD_LOGIC_VECTOR (n-1 downto 0));
  end mux4_1;
  

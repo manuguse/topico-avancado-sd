@@ -12,9 +12,9 @@ use IEEE.STD_LOGIC_1164.all;
 entity traditionalSystem_RNStoBin is
 	generic (n : natural := 4);
 	port(R1: in std_LOGIC_VECTOR(7 downto 0);
-		  R2: in std_LOGIC_VECTOR(11 downto 0);
+		  R2: in std_LOGIC_VECTOR(11 downto 8);
 		  R3: in std_LOGIC_VECTOR(16 downto 12);
-		  output : out STD_LOGIC_VECTOR(17 downto 0);
+		  output : out STD_LOGIC_VECTOR(15 downto 0));
 end traditionalSystem_RNStoBin;
   
 architecture Structural of traditionalSystem_RNStoBin is
@@ -41,19 +41,23 @@ signal sum0_2n_m1 , carry0_2n_m1 : std_logic_vector(2*n-1 downto 0);
 signal sum1_2n_m1 , carry1_2n_m1 : std_logic_vector(2*n-1 downto 0);
 signal saida : std_logic_vector(2*n-1 downto 0); -- 8 bits
 signal ones : std_logic_vector(2*n-1 downto 0); -- 8 bits
-signal R1: std_logic_vector(2*n-1 downto 0); -- 8 bits
-signal R2: std_logic_vector(n-1 downto 0); -- 4 bits
-signal R3: std_logic_vector(n downto 0); -- 5 bits
+signal iR1: std_LOGIC_VECTOR(7 downto 0);
+signal iR2: std_LOGIC_VECTOR(3 downto 0);
+signal iR3: std_LOGIC_VECTOR(4 downto 0);
   
 begin
   
   ones <= (others => '1');
   zeros <= (others => '0');
+  
+  iR1 <= R1;
+  iR2 <= R2;
+  iR3 <= R3;
   	 
   A(2*n-1 downto 0) <= not(R1);
-  B(2*n-1 downto 0) <= (R2(0) & R2(3 downto 0) & R2(3 downto 1));
-  Cn(2*n-1 downto 0) <= (R3(0) & zeros & R3(4 downto 1));
-  D(2*n-1 downto 0) <= not(R3 & zeros);
+  B(2*n-1 downto 0) <= (iR2(0) & iR2(3 downto 0) & iR2(3 downto 1));
+  Cn(2*n-1 downto 0) <= (iR3(0) & zeros & iR3(4 downto 1));
+  D(2*n-1 downto 0) <= not(iR3 & zeros);
   
   comp0_2n_m1: CSA_EAC generic map	(n => 2*n)
   	port map (I0 => A, I1 => B, I2 => Cn, S => sum0_2n_m1, C => carry0_2n_m1);

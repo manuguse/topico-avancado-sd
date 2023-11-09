@@ -12,10 +12,10 @@ use IEEE.STD_LOGIC_1164.all;
 
 entity traditionalSystem_BinToRNS is
 	generic (n : natural := 4);
-	port(SW    : in STD_LOGIC_VECTOR(15 downto 0);
-		  cpa17: out STD_LOGIC_VECTOR(4 downto 0);
-		  cpa15: out STD_LOGIC_VECTOR(3 downto 0);
-		  cpa256: out STD_LOGIC_VECTOR(8 downto 0);
+	port(SW    : in STD_LOGIC_VECTOR(4*n - 1 downto 0);
+		  cpa17: out STD_LOGIC_VECTOR(4*n downto 3*n);
+		  cpa15: out STD_LOGIC_VECTOR(3*n-1 downto 2*n);
+		  cpa256: out STD_LOGIC_VECTOR(2*n-1 downto 0));
 end traditionalSystem_BinToRNS;
 
 architecture Structural of traditionalSystem_BinToRNS is
@@ -83,7 +83,7 @@ comp0_2n_m1: CSA_EAC generic map	(  n => n)
 comp1_2n_m1: CSA_EAC generic map	( n => n) 
 					 port map (I0 => sum0_2n_m1, I1 => carry0_2n_m1, I2 => SW(4*n-1 downto 3*n), S => sum1_2n_m1, C => carry1_2n_m1);
 add_2n_m1: CPA_mod15 generic map	(  n => n)
-                     port map( s1 => sum1_2n_m1, c1 => carry1_2n_m1, f => cpa15;
+                     port map( s1 => sum1_2n_m1, c1 => carry1_2n_m1, f => cpa15);
 
 -- Conversão Modulo 17
 comp0_2n_p1: CSA_IEAC generic map	(  n => n)
@@ -97,7 +97,7 @@ sum3_2n_p1 <= '0' & sum2_2n_p1;
 carry3_2n_p1 <= '0' & carry2_2n_p1;
 
 add_2n_p1: CPA_mod17 generic map	(  n => n+1)
-                      port map(s1=> sum3_2n_p1, c1 => carry3_2n_p1, f  => cpa17;
+                      port map(s1=> sum3_2n_p1, c1 => carry3_2n_p1, f  => cpa17);
 
 end Structural;
 
