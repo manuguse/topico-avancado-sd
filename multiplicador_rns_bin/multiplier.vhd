@@ -43,7 +43,7 @@ signal sel: std_LOGIC_vector(1 downto 0);
  begin
  
  A_15 <= n15_out(2 downto 0)&n15_out(3);
- B_15 <= not(n15_out(2 downto 0)&n15_out(0));
+ B_15 <= not(n15_out(2 downto 0)&n15_out(3));
  C_15 <= not(n15_out(1 downto 0)&n15_out(3 downto 2));
  D_15 <= not(n15_out(0)&n15_out(3 downto 1));
  
