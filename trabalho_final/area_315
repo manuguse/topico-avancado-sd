@@ -1,0 +1,22 @@
+entry = input()
+missing = 4 - len(entry)
+entry = "0"*missing + entry
+
+def mult(x, y):
+    return str(int(x)*int(y))
+
+a = entry[3]
+b = entry[2]
+c = entry[1]
+d = entry[0]
+
+cd = mult(c,d)
+bd = mult(b,d)
+ad = mult(a,d)
+bc = mult(b,c)
+ac = mult(a,c)
+ab = mult(a,b)
+
+
+v1 = cd + cd + bd + cd + bd + cd + bd + ad + ac + '0' + a
+v2 = d + d + ad + bc + ac + ab + ad + ac + bc + '0' + b + "00"
