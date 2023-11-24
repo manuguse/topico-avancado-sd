@@ -7,10 +7,17 @@ entity area is
 port(
     raio: in std_logic_vector(3 downto 0);
     area_int: out std_logic_vector(9 downto 0);
-	 area_dec: out std_logic_vector(2 downto 0));
+	area_dec: out std_logic_vector(2 downto 0));
 end area;
 
 architecture area_arch of area is
+
+    component compressor4_1 is
+        generic(n : natural); -- 8
+        port(
+            A, B, C, D: in std_logic_vector(n - 1 downto 0); -- 8
+            compressao: out std_logic_vector(n + 1 downto 0)); -- 10
+    end component;
 
     signal A, B, C, D: std_logic;
     signal V1, V2, V3, V4: std_logic_vector(7 downto 0);
@@ -28,11 +35,10 @@ architecture area_arch of area is
     V3 <= D & (B and D) & (B and D) & (C and D) & (A and C) & (B and C) & ((not B) and C) & '0';
     V4 <= "00" & (A and D) & (A and D) & '0' & (B and D) & "00";
 
-    -- compressao <= V1 + V2 + V3 + V4;
-    compressao(7 downto 0) <= std_logic_vector(unsigned(V1) + unsigned(V2) + unsigned(V3) + unsigned(V4)); -- algo errado com o num de bits disso
-	 compressao(9 downto 8) <= "00";
+    compressor: compressor4_1 generic map(8) 
+    port map(V1, V2, V3, V4, compressao);
 
     area_int <= compressao;
-	 area_dec <= ((not A) and b) & '0' & A;
+	area_dec <= ((not A) and b) & '0' & A;
 
 end area_arch;

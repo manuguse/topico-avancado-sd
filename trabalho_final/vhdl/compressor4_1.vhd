@@ -9,7 +9,7 @@ entity compressor4_1 is
         compressao: out std_logic_vector(n + 1 downto 0)); -- 10
 end entity;
 
-architecture compression of compressor4_1
+architecture compression of compressor4_1 is
 
 component CSA is
 	generic (n : natural);
@@ -21,12 +21,23 @@ component CSA is
 end component;
 
 signal csa1_out_n: std_logic_vector(n-1 downto 0);
-signal csa1_out_n1, csa2_out_n1, csa2_out_n1: std_logic_vector(n downto 0);
+signal csa1_out_n1, csa2_out_n1: std_logic_vector(n downto 0);
+signal csa1_out_n_1, D_1: std_logic_vector(n downto 0);
+signal csa2_out_n2: std_logic_vector(n+1 downto 0);
 
 begin 
 
-csa1: csa generic map(8)
-port map(A, B, C, csa1_out_n, csa1_out_n1);
+csa1_out_n_1 <= '0' & csa1_out_n;
+D_1 <= '0' & D;
 
+csa1: csa generic map(n)
+port map(A, B, C, csa1_out_n, csa1_out_n1);
+--       8  8  8      8            9
+
+csa2: csa generic map(n+1)
+port map(csa1_out_n_1, csa1_out_n1, D_1, csa2_out_n1, csa2_out_n2);
+--            9             9       9       9              10
+
+compressao <= std_logic_vector((unsigned(csa1_out_n1)) + (unsigned(csa2_out_n2)));
 
 end architecture;
